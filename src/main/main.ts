@@ -21,6 +21,7 @@ import * as proxy from './proxy'
 import * as fs from 'fs-extra'
 import * as analystic from './analystic-node'
 import sanitizeFilename from 'sanitize-filename'
+import { globalShortcut } from 'electron'  // 상단 import에도 추가
 
 if (process.platform === 'win32') {
     app.setAppUserModelId(app.name)
@@ -102,6 +103,15 @@ const createWindow = async () => {
                 : path.join(__dirname, '../../.erb/dll/preload.js'),
         },
     })
+    globalShortcut.register('CommandOrControl+Shift+O', () => {
+        if (!mainWindow) return
+        if (mainWindow.isVisible()) {
+          mainWindow.hide()
+        } else {
+          mainWindow.show()
+        }
+      })
+    
 
     mainWindow.loadURL(resolveHtmlPath('index.html'))
 
